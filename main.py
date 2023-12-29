@@ -1,9 +1,8 @@
+
 import string
 import tkinter as tk
 import customtkinter
 from tkinter import messagebox
-import random
-
 
 def check_password_strength(password: str) -> int:
     """Returns a score indicating the strength of the password.
@@ -90,13 +89,7 @@ label.pack()
 message_label = customtkinter.CTkLabel(root, text="")
 message_label.pack(pady=10)
 
-guess_entry = customtkinter.CTkEntry(root, width=40)
-guess_entry.pack(pady=5)
-
-guess_button = customtkinter.CTkButton(root, text="Guess", command=check_guess)
-guess_button.pack(pady=5)
-
-reset_button = customtkinter.CTkButton(root, text="Reset", command=reset_game)
-reset_button.pack(pady=5)
+guess_entry = customtkinter.CTkEntry(root, width=200, placeholder_text="Enter your password")
+guess_entry.pack()
 
 root.mainloop()
