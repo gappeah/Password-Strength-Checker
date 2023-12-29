@@ -1,4 +1,3 @@
-
 import string
 import tkinter as tk
 import customtkinter
@@ -49,37 +48,30 @@ def check_password(password: str) -> None:
 
     # Check if the password is too common
     if password in common_passwords:
-        print("Password is too common. Your password strength is 0.")
+        message_label.configure(text="Password is too common. Your password strength is 0.")
         return
 
     # Check the password strength
     score = check_password_strength(password)
-    if score == 0:
+
+    # Check if the password is weak
+    if score <= 2:
         message_label.configure(text="Password is too weak.")
         if x < 4:
-            print ("Password must contain at least an uppercase letter, lowercase letter, special character and at least one digit")
-    elif score == 1:
-        message_label.configure(text="Password is not that strong password is weak.")
-        if x < 4:
-            print ("Password must contain at least an uppercase letter, lowercase letter, special character and at least one digit")
-    elif score == 2:
-        message_label.configure(text="Password is not that strong, password is average.")
-        if x < 4:
-            print ("Password must contain at least an uppercase letter, lowercase letter, special character and at least one digit")
+            print("Password must contain at least an uppercase letter, lowercase letter, special character, and at least one digit")
+    # Check if the password is average
     elif score == 3:
-        message_label.configure(text="Password is not that strong.")
+        message_label.configure(text="Password is average.")
         if x < 4:
-            print ("Password must contain at least an uppercase letter, lowercase letter, special character and at least one digit")
-    elif score == 4:
-        message_label.configure(text="Password is not that strong.")
-        if x < 4:
-            message_label.configure(text="Password must contain at least an uppercase letter, lowercase letter, special character and at least one digit")
+            print("Password must contain at least an uppercase letter, lowercase letter, special character, and at least one digit")
+    # Check if the password is strong
     else:
-        message_label.configure(text="Password is extremely strong and can be used.")
+        message_label.configure(text="Password is strong.")
+
 
 
 root = customtkinter.CTk()
-root.title("Number Guessing Game")
+root.title("Password Strength Checker")
 root.geometry("700x300")
 
 
@@ -90,6 +82,9 @@ message_label = customtkinter.CTkLabel(root, text="")
 message_label.pack(pady=10)
 
 guess_entry = customtkinter.CTkEntry(root, width=200, placeholder_text="Enter your password")
-guess_entry.pack()
+guess_entry.pack(pady=10)
+
+check_button = customtkinter.CTkButton(root, text="Check Password Strength", command=lambda: check_password_strength(guess_entry.get()))
+check_button.pack(pady=5)
 
 root.mainloop()
