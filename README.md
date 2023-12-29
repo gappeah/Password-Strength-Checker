@@ -1,6 +1,9 @@
 # Password Strength Checker
 ## This Python application helps you assess the strength of your passwords.
 
+![image](https://github.com/gappeah/Password-Guesser/assets/114095068/a3815aca-b361-4c41-82f6-523a05f53ddc)
+
+
 ## Features:
 
 - **GUI interface:** Provides a user-friendly interface for easy interaction.
