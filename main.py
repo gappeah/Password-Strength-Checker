@@ -7,28 +7,20 @@ def check_password_strength(password: str) -> int:
     """Returns a score indicating the strength of the password.
     A higher score means the password is stronger.
     """
-    
-    global x
+
     score = 0
-    x = 0
-    # Check if the password contains at least one character from each required character class
+
+    # Check character classes
     if any(c.isupper() for c in password):
         score += 1
-        x = 1
     if any(c.islower() for c in password):
         score += 1
-        x += 1
     if any(c.isdigit() for c in password):
         score += 1
-        x += 1
     if any(c in string.punctuation for c in password):
         score += 1
-        x += 1
-    
-    if x < 4:
-        return score
-    
-    # Check if the password is long enough
+
+    # Check password length
     if len(password) >= 8:
         score += 1
     if len(password) >= 12:
@@ -41,39 +33,35 @@ def check_password_strength(password: str) -> int:
     return score
 
 def check_password(password: str) -> None:
-    """Checks the password for various issues and prints a message indicating its strength."""
-    # Read the list of common passwords from the file
-    with open("common.txt", "r") as f:
-        common_passwords = set(f.read().splitlines())
+    """Checks the password for various issues and updates the GUI with its strength."""
 
-    # Check if the password is too common
+    # Read common passwords file (ensure it exists)
+    try:
+        with open("common.txt", "r") as f:
+            common_passwords = set(f.read().splitlines())
+    except FileNotFoundError:
+        messagebox.showerror("Error", "Common password file not found.")
+        return
+
+    # Check for common password
     if password in common_passwords:
         message_label.configure(text="Password is too common. Your password strength is 0.")
         return
 
-    # Check the password strength
+    # Check password strength
     score = check_password_strength(password)
 
-    # Check if the password is weak
+    # Update GUI with feedback
     if score <= 2:
         message_label.configure(text="Password is too weak.")
-        if x < 4:
-            print("Password must contain at least an uppercase letter, lowercase letter, special character, and at least one digit")
-    # Check if the password is average
     elif score == 3:
         message_label.configure(text="Password is average.")
-        if x < 4:
-            print("Password must contain at least an uppercase letter, lowercase letter, special character, and at least one digit")
-    # Check if the password is strong
     else:
         message_label.configure(text="Password is strong.")
-
-
 
 root = customtkinter.CTk()
 root.title("Password Strength Checker")
 root.geometry("700x300")
-
 
 label = customtkinter.CTkLabel(root, text="Please enter your password and check its strength:")
 label.pack()
@@ -84,7 +72,7 @@ message_label.pack(pady=10)
 guess_entry = customtkinter.CTkEntry(root, width=200, placeholder_text="Enter your password")
 guess_entry.pack(pady=10)
 
-check_button = customtkinter.CTkButton(root, text="Check Password Strength", command=lambda: check_password_strength(guess_entry.get()))
+check_button = customtkinter.CTkButton(root, text="Check Password Strength", command=lambda: check_password(guess_entry.get()))
 check_button.pack(pady=5)
 
 root.mainloop()
